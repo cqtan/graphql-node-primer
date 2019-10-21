@@ -93,7 +93,7 @@ const updatePostForUser = async (postId, data) => {
   return post.author
 }
 
-updatePostForUser("00", {
+updatePostForUser("ck20avy79020a0798brru8f2i", {
   title: "THE NEWEST TITLE111111111",
   body: "THE NEWEST BODY, YOoooooooo!"
 })
