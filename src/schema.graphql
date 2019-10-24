@@ -72,7 +72,7 @@ type Comment {
 
 type CommentSubscriptionPayload {
   mutation: MutationType!
-  data: Comment!
+  node: Comment
 }
 
 type User {
@@ -95,5 +95,5 @@ type Post {
 
 type PostSubscriptionPayload {
   mutation: MutationType!
-  data: Post!
+  node: Post!
 }
