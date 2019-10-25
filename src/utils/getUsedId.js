@@ -1,14 +1,21 @@
 import jwt from "jsonwebtoken"
 
-const getUserId = request => {
+// requireAuth: To additionally allow signed users to view their unpublished posts
+const getUserId = (request, requireAuth = true) => {
   const header = request.request.headers.authorization
 
-  if (!header) throw new Error("Authentication is required")
+  if (header) {
+    const token = header.replace("Bearer ", "")
+    const decoded = jwt.verify(token, "secret")
 
-  const token = header.replace("Bearer ", "")
-  const decoded = jwt.verify(token, "secret")
+    return decoded.userId
+  }
 
-  return decoded.userId
+  if (requireAuth) {
+    throw new Error("Authentication is required")
+  }
+
+  return null
 }
 
 export { getUserId as default }
