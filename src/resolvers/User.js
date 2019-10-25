@@ -1,3 +1,5 @@
+import getUserId from "../utils/getUsedId"
+
 const User = {
   // * These overrides the relationships already provided by Prisma
   // * Later to be used for authentication though!
@@ -11,6 +13,15 @@ const User = {
   //     return comment.author === parent.id
   //   })
   // }
+  email: (parent, args, { request }, info) => {
+    const userId = getUserId(request, false)
+
+    if (userId && userId === parent.id) {
+      return parent.email
+    } else {
+      return null
+    }
+  }
 }
 
 export { User as default }
