@@ -1,9 +1,45 @@
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+
 const Mutation = {
   createUser: async (parent, args, { prisma }, info) => {
     const emailTaken = await prisma.exists.User({ email: args.data.email })
     if (emailTaken) throw new Error("Email taken!")
 
-    return prisma.mutation.createUser({ data: args.data }, info)
+    if (args.data.password.length < 8)
+      throw new Error("Password must be 8 characters or long")
+
+    const password = await bcrypt.hash(args.data.password, 10)
+
+    const user = await prisma.mutation.createUser({
+      data: {
+        ...args.data,
+        password
+      }
+    })
+
+    return {
+      user,
+      token: jwt.sign({ userId: user.id }, "secret")
+    }
+  },
+  login: async (parent, args, { prisma }, info) => {
+    const user = await prisma.query.user({
+      where: {
+        email: args.data.email
+      }
+    })
+
+    if (!user) throw new Error("No user found!")
+
+    const isMatch = await bcrypt.compare(args.data.password, user.password)
+
+    if (!isMatch) throw new Error("Unable to login")
+
+    return {
+      user,
+      token: jwt.sign({ userId: user.id }, "secret")
+    }
   },
   deleteUser: async (parent, args, { prisma }, info) => {
     const userExists = await prisma.exists.User({ id: args.id })
