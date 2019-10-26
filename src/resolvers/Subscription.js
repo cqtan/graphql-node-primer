@@ -1,3 +1,5 @@
+import getUserId from "../utils/getUsedId"
+
 const Subscription = {
   comment: {
     subscribe: (parent, { postId }, { prisma }, info) => {
@@ -13,12 +15,6 @@ const Subscription = {
         },
         info
       )
-
-      // const post = db.posts.find(post => post.id === postId && post.published)
-
-      // if (!post) throw new Error("Post not found")
-
-      // return pubsub.asyncIterator(`comment ${postId}`)
     }
   },
   post: {
@@ -33,8 +29,20 @@ const Subscription = {
         },
         info
       )
+    }
+  },
+  myPost: {
+    subscribe: async (parent, args, { prisma, request }, info) => {
+      const userId = getUserId(request)
 
-      // return pubsub.asyncIterator("post")
+      return prisma.subscription.post(
+        {
+          where: {
+            node: { author: { id: userId } }
+          }
+        },
+        info
+      )
     }
   }
 }
