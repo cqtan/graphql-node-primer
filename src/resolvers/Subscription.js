@@ -1,4 +1,4 @@
-import getUserId from "../utils/getUsedId"
+import getUserId from "../utils/getUserId"
 
 const Subscription = {
   comment: {
