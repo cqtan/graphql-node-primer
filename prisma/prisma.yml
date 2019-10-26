@@ -1,3 +1,4 @@
-endpoint: http://localhost:4466
+#endpoint: ${env:PRISMA_ENDPOINT}
+endpoint: https://couchcat-gql-primer-ea39d45b05.herokuapp.com/couchcat-gql-blogging-app/prod
 datamodel: datamodel.graphql
 secret: mysupersecrethaha
