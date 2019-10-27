@@ -103,3 +103,31 @@ it("should expose published posts only", async () => {
   expect(response.data.posts.length).toBe(1)
   expect(response.data.posts[0].published).toBe(true)
 })
+
+it("should not login with bad credentials", async () => {
+  const login = gql`
+    mutation {
+      login(data: { email: "rando@test.com", password: "12345678" }) {
+        token
+      }
+    }
+  `
+  await expect(client.mutate({ mutation: login })).rejects.toThrow()
+})
+
+it("should not create a user with a password less than 8 characters long", async () => {
+  const createUser = gql`
+    mutation {
+      createUser(
+        data: { name: "Croco", email: "croco@test.com", password: "12345" }
+      ) {
+        token
+        user {
+          id
+        }
+      }
+    }
+  `
+
+  await expect(client.mutate({ mutation: createUser })).rejects.toThrow()
+})
