@@ -69,3 +69,37 @@ test("Should create a new user", async () => {
   })
   expect(exists).toBe(true)
 })
+
+it("should expose public author profiles", async () => {
+  const getUsers = gql`
+    query {
+      users {
+        id
+        name
+        email
+      }
+    }
+  `
+
+  const response = await client.query({ query: getUsers })
+
+  expect(response.data.users.length).toBe(1)
+  expect(response.data.users[0].email).toBe(null)
+})
+
+it("should expose published posts only", async () => {
+  const getPosts = gql`
+    query {
+      posts {
+        title
+        body
+        published
+      }
+    }
+  `
+
+  const response = await client.query({ query: getPosts })
+
+  expect(response.data.posts.length).toBe(1)
+  expect(response.data.posts[0].published).toBe(true)
+})
