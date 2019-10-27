@@ -1,50 +1,12 @@
 import "@babel/polyfill/noConflict"
 import "cross-fetch/polyfill"
-import ApolloBoost, { gql } from "apollo-boost"
+import { gql } from "apollo-boost"
 import prisma from "../src/prisma"
-import bcrypt from "bcryptjs"
+import seedDatabase, { userOne } from "./utils/seedDatabase"
+import getClient from "./utils/getClient"
 
-const client = new ApolloBoost({
-  uri: "http://localhost:4000"
-})
-
-beforeEach(async () => {
-  await prisma.mutation.deleteManyPosts()
-  await prisma.mutation.deleteManyUsers()
-  const user = await prisma.mutation.createUser({
-    data: {
-      name: "Dog",
-      email: "dog@test.com",
-      password: bcrypt.hashSync("asdf1234")
-    }
-  })
-
-  await prisma.mutation.createPost({
-    data: {
-      title: "TestPost1",
-      body: "TestPost1 Body",
-      published: true,
-      author: {
-        connect: {
-          id: user.id
-        }
-      }
-    }
-  })
-
-  await prisma.mutation.createPost({
-    data: {
-      title: "TestPost2",
-      body: "TestPost2 Body",
-      published: false,
-      author: {
-        connect: {
-          id: user.id
-        }
-      }
-    }
-  })
-})
+const client = getClient()
+beforeEach(seedDatabase)
 
 test("Should create a new user", async () => {
   const createUser = gql`
@@ -87,23 +49,6 @@ it("should expose public author profiles", async () => {
   expect(response.data.users[0].email).toBe(null)
 })
 
-it("should expose published posts only", async () => {
-  const getPosts = gql`
-    query {
-      posts {
-        title
-        body
-        published
-      }
-    }
-  `
-
-  const response = await client.query({ query: getPosts })
-
-  expect(response.data.posts.length).toBe(1)
-  expect(response.data.posts[0].published).toBe(true)
-})
-
 it("should not login with bad credentials", async () => {
   const login = gql`
     mutation {
@@ -130,4 +75,22 @@ it("should not create a user with a password less than 8 characters long", async
   `
 
   await expect(client.mutate({ mutation: createUser })).rejects.toThrow()
+})
+
+it("should fetch user profile", async () => {
+  const client = getClient(userOne.jwt)
+  const getProfile = gql`
+    query {
+      me {
+        id
+        name
+        email
+      }
+    }
+  `
+  const { data } = await client.query({ query: getProfile })
+
+  expect(data.me.id).toBe(userOne.user.id)
+  expect(data.me.name).toBe(userOne.user.name)
+  expect(data.me.email).toBe(userOne.user.email)
 })
