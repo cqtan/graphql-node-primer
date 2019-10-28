@@ -1,4 +1,4 @@
-# GraphQL (Prisma) with NodeJS
+<h1 align="center">GraphQL (Prisma) with NodeJS</h1>
 
 <div align="center">
   <img src="https://user-images.githubusercontent.com/33485290/67714175-a3988280-f9c7-11e9-8640-61026b37cb7e.png"/>
@@ -16,7 +16,7 @@ A small project covering the fundamentals of using GraphQL with NodeJS as an alt
 - [Heroku](https://dashboard.heroku.com/apps) (Deployment and quick setup of Postgres - on free tier)
 - [Prisma Cloud](https://www.prisma.io/cloud) (Manage Prisma Server Container deployments (works well with Heroku). Also provides alternative to pgAdmin)
 
-# Notes
+# 📌 Notes
 
 ## Multiple Prisma Project
 
@@ -87,7 +87,7 @@ const User = {
 
 - Usecase here: Client does not need to explicitly query the `id` field anymore. But since we restrict access to the `email` field to only the own Client, we use a fragment to provide the `id` field, which is then accessible on the `parent` object
 
-## Prisma Troubleshooting
+## 🚧 Prisma Troubleshooting
 
 - If schemas are not visible on **pgAdmin**, then we need to recreate them
   - Run the following to delete schema created with prisma deploy
@@ -110,7 +110,7 @@ prisma delete -e <path_to_env_file>
   docker-compose up -d
 ```
 
-# Abstract Summary (mostly for me)
+# 🚀 Abstract Summary (mostly for me)
 
 ## Configuration
 
