@@ -1,5 +1,9 @@
 # GraphQL (Prisma) with NodeJS
 
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/33485290/67714175-a3988280-f9c7-11e9-8640-61026b37cb7e.png"/>
+</div>
+
 A small project covering the fundamentals of using GraphQL with NodeJS as an alternative to conventional REST API development. This repo mainly serves as a primer to GraphQL development on the backend and as reviewing material. The course that this is based on and the full description on which topics are covered can be found [here](https://www.udemy.com/course/graphql-bootcamp/).
 
 ## Main Tools and Services used
