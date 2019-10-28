@@ -103,6 +103,26 @@ const deleteComment = gql`
     }
   }
 `
+// Subscription: (Not support by ApolloBoost)
+// const subscribeToComments = gql`
+//     subscription($postId: ID!) {
+//         comment(postId: $postId) {
+//             mutation
+//             node {
+//                 id
+//                 text
+//             }
+//         }
+//     }
+// `
+
+// const subscribeToPosts = gql`
+//     subscription {
+//         post {
+//             mutation
+//         }
+//     }
+// `
 
 export {
   createUser,

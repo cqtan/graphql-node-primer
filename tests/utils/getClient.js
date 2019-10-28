@@ -1,4 +1,4 @@
-import ApolloBoost, { gql } from "apollo-boost"
+import ApolloBoost from "apollo-boost"
 
 const getClient = jwt => {
   return new ApolloBoost({
