@@ -31,7 +31,7 @@ test("Should create a new user", async () => {
 it("should expose public author profiles", async () => {
   const response = await client.query({ query: getUsers })
 
-  expect(response.data.users.length).toBe(1)
+  expect(response.data.users.length).toBe(2)
   expect(response.data.users[0].email).toBe(null)
 })
 
